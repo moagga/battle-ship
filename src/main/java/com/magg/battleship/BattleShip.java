@@ -17,10 +17,14 @@ public class BattleShip {
 
     public static void main(String[] args) {
         try {
-            String filePath = Paths.get(Thread.currentThread().getContextClassLoader().getResource("sample-run.txt").toURI()).toString();
+            String filePath = null;
             if (args.length > 0 && args[0] != null && !args[0].isEmpty()) {
                 filePath = args[0];
+            } else {
+                //defaulting
+                filePath = Paths.get(Thread.currentThread().getContextClassLoader().getResource("sample-run.txt").toURI()).toString();
             }
+            System.out.println(filePath);
 
             InputProvider provider = new FileInputProvider(filePath);
 
