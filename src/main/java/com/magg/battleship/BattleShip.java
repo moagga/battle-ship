@@ -1,44 +1,43 @@
 package com.magg.battleship;
 
-import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 
+import com.magg.battleship.game.Game;
 import com.magg.battleship.model.Player;
+import com.magg.battleship.provider.FileInputProvider;
+import com.magg.battleship.provider.InputProvider;
 
 /**
- * Main class 
+ * Main class
  * 
  * @author Mohit Aggarwal
- *
  */
 public class BattleShip {
-	
-	private static final String PATH = "/Users/magg/Documents/Projects/battle-ship/src/main/resources/sample-run.txt";
-	
-    public static void main( String[] args) {
-    	try {
-        	String filePath = PATH;
-//        	String filePath = args[0];
-        	if (filePath == null || filePath.isEmpty()){
-        		throw new IllegalArgumentException("Input file path missing");
-        	}
-        	List<String> inputs = Files.readAllLines(Paths.get(filePath));
-			
-			Game game = new Game();
-			game.setup(inputs);
-			Player winner = game.play();
-			if (winner != null){
-				System.out.println("Winner:" + winner.getName());
-			} else {
-				System.out.println("Peace declared");
-			}
-			
-		} catch (Exception e) {
-			//Print to console. Use logging 
-			e.printStackTrace();
-		}
-    	
-    	
+
+
+    public static void main(String[] args) {
+        try {
+            String filePath = Paths.get(Thread.currentThread().getContextClassLoader().getResource("sample-run.txt").toURI()).toString();
+            if (args.length > 0 && args[0] != null && !args[0].isEmpty()) {
+                filePath = args[0];
+            }
+
+            InputProvider provider = new FileInputProvider(filePath);
+
+            Game game = new Game();
+            game.setup(provider);
+            Player winner = game.play();
+
+            if (winner != null) {
+                System.out.println("Winner:" + winner.getName());
+            } else {
+                System.out.println("Peace declared");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 }
